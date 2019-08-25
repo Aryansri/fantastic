@@ -1,0 +1,240 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.bg-color{
+    background-color: black;
+    height:550px;
+    position: relative;
+    width: 100%
+
+}
+.position-absolute{
+    top: 3rem;
+} 
+.position-relative{
+    bottom: 7rem;
+}
+.font_color {
+    color: #560404;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: sans-serif;
+}
+
+#number{
+    color: #560404;
+    font-size:16px;
+
+}
+#hot{
+    width: 50%;
+}
+.chat_send_button{
+    position: absolute;
+    top: 0;
+    right: 0rem;
+    color: white;
+    margin: 0px;
+    padding: 3px 20px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    background: green;
+}
+.bet_btn{
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-weight: 800;
+    color: white;
+}
+.button{
+   width: 67px;
+   height: 100%;
+   padding: 0;
+   margin:0;
+}
+.btn_img{
+    height: 79%;
+    width:103%;
+    padding: 1px;
+}
+.bg{
+    background: #cccdcf;
+    border-radius: 10px;
+}
+ .h-100{
+     
+    width: 350px;
+} 
+.img-fluid{
+    width: 11%;
+    padding: 1px;
+}
+.img-fluid:hover{
+    color : black;
+}
+.square{
+    width: 25%;
+}
+
+.button_img{
+    width: 100%;
+}
+
+.bet_range{
+
+    background: #a59e9e;
+    /* padding: 2px 23px; */
+    margin-top: 50px;
+    border-radius: 10px;
+    border: 1px solid #9e9e9e;
+
+}
+.bar {
+    padding: 0;
+    height: 400%;
+    top: -9rem;
+    background: #c5c5c5;
+    margin-left: 8px;
+   border-radius: 8px;
+
+    
+}
+
+.bet_btn{
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    font-family: sans-serif;
+    font-weight: 800;
+    color: white;
+}
+
+ #bar1{
+    /* visibility: hidden; */
+} 
+
+ #bar2{
+    visibility: hidden;
+} 
+
+ #bar3{
+    visibility: hidden;
+} 
+
+ #bar4{
+    visibility: hidden;
+} 
+
+ #bar5{
+    visibility: hidden; 
+} 
+
+ #bar6{
+    visibility: hidden;
+} 
+
+
+
+ .slidecontainer {
+       width: 11rem;
+    position: relative;
+    top: 37%;
+    right: 3.6rem;
+    transform: rotate(-90deg);
+}
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+           
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30px;
+            height: 30px;
+            
+            border-radius: 50%;
+             /* background:url('../images/bar.png'); */
+             background-color: #a21414;
+               cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+             width: 30px;
+            height: 30px;
+            
+            border-radius: 50%;
+             /* background:url('../images/bar.png'); */
+            cursor: pointer;
+        }
+
+
+        
+
+
+
+
+
+
+
+@media (min-device-width: 319px) and (max-device-width: 900px){
+    
+.position-absolute {
+    top: 0;
+}
+#number {
+    color: #a21414;
+    font-size: 10px;
+    padding: 0;
+    margin: 0;
+}
+
+.position-relative {
+    bottom: 11rem;
+}
+
+.bar {
+    padding: 0;
+    height: 134%;
+    top: -2rem;
+    background: #c5c5c5;
+    margin-left: 8px;
+    /* visibility: hidden; */
+}
+.slidecontainer {
+    width: 6rem;
+    /* height: 5rem; */
+    position: relative;
+    top: 31%;
+    right: 2rem;
+    transform: rotate(-90deg)
+}
+.chat_send_button {
+    position: absolute;
+    top: 0;
+    right: 0rem;
+    color: white;
+    margin: 0px;
+    padding: 3px 10px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    background: green;
+}
+}
