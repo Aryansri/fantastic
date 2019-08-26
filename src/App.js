@@ -8,6 +8,8 @@ import './App.css';
 // import Loyout from './components/Loyout';
 import Frontview from './components/Frontview';
 // import DownBar from './components/DownBar';
+// import Items from './components/DownBar';
+// import DownBar from './components/DownBar';
 
 
 function App() {
@@ -21,7 +23,9 @@ function App() {
     
   {/* <FrontScreen/> */}
   <Frontview/>
-
+{/* <Items/> */}
+{/* <DownBar/> */}
+{/* <Homepage/> */}
 {/* <DownBar/> */}
     </div>
   );

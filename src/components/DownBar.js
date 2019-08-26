@@ -87,60 +87,192 @@
 //     }
 // }
 
-import React, { Component } from 'react'
-import Slider from 'react-rangeslider'
-import 'react-rangeslider/lib/index.css'
+// import React, { Component } from 'react'
+// import Slider from 'react-rangeslider'
+// import 'react-rangeslider/lib/index.css'
 
-class DownBar extends Component {
-  constructor (props, context) {
-    super(props, context)
-    this.state = {
-      value: 25,
-      reverseValue: 8
+// class DownBar extends Component {
+//   constructor (props, context) {
+//     super(props, context)
+//     this.state = {
+//       value: 25,
+//       reverseValue: 8
+//     }
+//   }
+
+//   handleChange = (value) => {
+//     this.setState({
+//       value: value
+//     })
+//   }
+
+//   handleChangeReverse = (value) => {
+//     this.setState({
+//       reverseValue: value
+//     })
+//   }
+
+//   render () {
+//     const { value, reverseValue } = this.state
+//     return (
+//       <div className='slider orientation-reversed'>
+//         <div className='slider-group'>
+//           <div className='slider-vertical'>
+//             <Slider
+//               min={0}
+//               max={100}
+//               value={value}
+//               orientation='vertical'
+//               onChange={this.handleChange}
+//             />
+//             <div className='value'>{value}</div>
+//           </div>
+//           <div className='slider-horizontal'>
+//             <Slider
+//               min={0}
+//               max={10}
+//               value={reverseValue}
+//               orientation='horizontal'
+//               onChange={this.handleChangeReverse}
+//             />
+//             <div className='value'>{reverseValue}</div>
+//           </div>
+//         </div>
+//       </div>
+//     )
+//   }
+// }
+
+// export default  DownBar
+
+
+
+
+
+
+
+
+
+// import  React ,{Component}from 'react'
+// import {Col,itemType,Image,teasers,Row,Grid} from 'react-bootstrap'
+// // At the moment when a button is clicked, all of them change to 'Voted'
+
+// class Items extends Component {
+//     constructor(props) {
+//         super(props);
+//         this.state = { hasVoted: false };
+
+//         this.OnClick = this.OnClick.bind(this);
+//     }
+
+//     OnClick() {
+//         this.setState(prevState => ({
+//             hasVoted: !prevState.hasVoted
+//         }));
+//     }
+
+//     render() {
+//         const Item = teasers.items.map(item =>
+//             <Col key={item.nid}>
+//                 <span>
+//                     {itemType}
+//                 </span>
+
+//                 <a href={item.path}>
+//                     <Image src={item.image.src} title={item.productType} />
+//                     <span>
+//                         {item.Title}
+//                     </span>
+//                     <div className={teasersStyle.copy}>
+//                         {" "}{item.Copy}>
+//                     </div>
+//                 </a>
+
+//                 <div
+//                     className={this.state.hasVoted ? "active" : "notactive"}
+//                     onClick={this.OnClick}
+//                 >
+//                     {this.state.hasVoted ? "Voted" : "Vote"}
+//                 </div>
+//             </Col>
+//         );
+//         return (
+//             <div>
+              
+//                     <Row>
+//                         {Item}
+//                     </Row>
+                
+//             </div>
+//         );
+//     }
+// }
+
+// export default Items;
+
+
+import React, { Component } from 'react';
+
+class DownBar extends Component {  
+    constructor( props ){
+        super( props )
+        this.state = {show : true};
+        this.showHide = this.showHide.bind(this)
     }
-  }
-
-  handleChange = (value) => {
-    this.setState({
-      value: value
-    })
-  }
-
-  handleChangeReverse = (value) => {
-    this.setState({
-      reverseValue: value
-    })
-  }
-
-  render () {
-    const { value, reverseValue } = this.state
-    return (
-      <div className='slider orientation-reversed'>
-        <div className='slider-group'>
-          <div className='slider-vertical'>
-            <Slider
-              min={0}
-              max={100}
-              value={value}
-              orientation='vertical'
-              onChange={this.handleChange}
-            />
-            <div className='value'>{value}</div>
-          </div>
-          <div className='slider-horizontal'>
-            <Slider
-              min={0}
-              max={10}
-              value={reverseValue}
-              orientation='horizontal'
-              onChange={this.handleChangeReverse}
-            />
-            <div className='value'>{reverseValue}</div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+    render() {
+        return (    
+            <section id="content">
+                <div className="top-content">
+                    <div className="container">
+                        <h1>React</h1>
+                        <h2>A JavaScript library for building user interfaces</h2>
+                    </div>
+                </div>
+                <div className="container">
+                    <div>
+                        <div>
+                            <h3>Declarative</h3>
+                            <button onClick={this.showHide} className="button-primary btn">{this.changeName()}</button>
+                            { this.state.show && 
+                                <div>
+                                    <p>text</p>
+                                    <p>text</p>
+                                </div>
+                            }
+                        </div>
+                        <div>
+                            <h3>Component-Based</h3>
+                            <button onClick={this.showHide} className="button-primary btn">{this.changeName()}</button>
+                            { this.state.show && 
+                                <div>
+                                    <p>text</p>
+                                    <p>text</p>
+                                </div>
+                            }
+                        </div>
+                        <div>
+                            <h3>Learn Once, Write Anywhere</h3>
+                            <button onClick={this.showHide} className="button-primary btn">{this.changeName()}</button>
+                            { this.state.show && 
+                                <div>
+                                    <p>text</p>
+                                    <p>text</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+      );  
+    }
+    changeName(){
+        let text = "text "
+        text += this.state.show === true ? "hide" : "show";
+        return text;
+    }
+    showHide(){
+        const { show } = this.state;
+        this.setState( { show : !show})
+    }
 }
-
-export default  DownBar
+export default DownBar;

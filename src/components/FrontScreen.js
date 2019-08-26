@@ -119,7 +119,7 @@ this.setState({
                     <div className="col-6 d-flex justify-content-end">
                          <div className="col-3 d-lg-block"></div>
                         <div className="col-lg-9 col-md-10 d-flex p-0 pr-sm-3 pr-lg-5 pr-md-4 col-sm-9">
-                      {this.state.handlerclick && <div className="col-2 bar m-0 text-center" id="bar1">
+                       <div className="col-2 bar m-0 text-center" id="bar1">
                                   
                                 <div><span className="bet_range" id="demo">{this.state.value}</span></div>
                                 
@@ -129,15 +129,15 @@ this.setState({
                                    
                                 </div>
                                 
-                             </div>}
+                             </div>
     
-                           {this.state.handlerclick && <div className="col-2 bar m-0" id="bar2">
+                            <div className="col-2 bar m-0" id="bar2">
                                 <span className="bet_range" id="demo">0</span>
                                 <div className="slidecontainer">
                                     <input type="range" min="0" max="100" value="0" className="slider" id="myRange"/>
                                   
                                 </div>
-                            </div>}
+                            </div>
                             <div className="col-2 bar m-0" id="bar3">
                                 <span className="bet_range" class="bet_range" id="demo">0</span>
                                 <div className="slidecontainer">

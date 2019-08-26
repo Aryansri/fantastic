@@ -90,25 +90,25 @@ background: white;
 }
 /* .bar-1 {
 left: 1%;
-} */
-/* .bar-2{
+} */ .bar-2{ 
 left: 15%;
-}
+} 
 .bar-3{
-left: 29%; */
+left: 29%; 
+}
 /* } */
-/* .bar-4{
+ .bar-4{
 left: 43%;
-} */
-/* .bar-5{
+} 
+ .bar-5{
 left: 56%;
-} */
-/* .bar-6{
+} 
+.bar-6{
 left: 70%;
-} */
-/* .bar{
+} 
+/* .bar{ */
 /* visibility: hidden; */
-/* } */
+/* /* } */
 .background_color{
 background: #cccdcf;
 border-radius: 10px;
