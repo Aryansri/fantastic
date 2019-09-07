@@ -18,6 +18,7 @@ import Loyout from './Loyout'
       handlerclick1:false,
       handlerclick:false,
       value:0
+      
   
        
     }
@@ -125,7 +126,7 @@ this.setState({
                                 
                                   <div className="slidecontainer">
                               
-                                    <input onChange={this.handlerChangeValue}  type="range" min={0} max={1000} value={this.state.value} className="slider" id="myRange"/>
+                                    <input onChange={this.handlerChange.value1}  type="range" min={0} max={1000} value={this.state.value} className="slider" id="myRange"/>
                                    
                                 </div>
                                 

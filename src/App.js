@@ -24,7 +24,7 @@ function App() {
   {/* <FrontScreen/> */}
   <Frontview/>
 {/* <Items/> */}
-{/* <DownBar/> */}
+ {/* <DownBar/> */}
 {/* <Homepage/> */}
 {/* <DownBar/> */}
     </div>

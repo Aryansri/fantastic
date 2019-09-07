@@ -171,8 +171,8 @@ body {
             height: 30px;
             
             border-radius: 50%;
-             /* background:url('../images/bar.png'); */
-             background-color: #a21414;
+             background:url('../assets/bar.png');
+             /* background-color: #a21414; */
                cursor: pointer;
         }
 
@@ -181,7 +181,7 @@ body {
             height: 30px;
             
             border-radius: 50%;
-             /* background:url('../images/bar.png'); */
+             background:url('../assets/bar.png');
             cursor: pointer;
         }
 

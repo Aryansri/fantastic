@@ -1,49 +1,219 @@
+
 import React, { Component } from 'react'
 
-import './Frontview.css'
+import './Frontview.css';
+// import '/RequsetData.json'
+
+ const URL='ws://localhost:8080'
+  const ws = new WebSocket(URL)
+
 
 export default class Frontview extends Component {
 
+// URL.send('hello')
+constructor(props) {
+  super(props)
+
+  this.state = {
+ handlerclick: "",
+    value: 0,
+    balance:10000,
+  
+  number : 0,
+  name : "srikanth",
+  total : 0,
+   accesstoken: "kasdfkajsdfkasdjfkasdjf.234asdfklasdjf" 
+  }
+
+}
 
 
-  constructor(props) {
-    super(props)
 
-    this.state = {
-      handlerclick: false,
+//join room event 
+handleJoin=()=>{
+  console.log('join room event');
+  ws.send(JSON.stringify({"type":"join",  "accessToken": this.state.accesstoken}));
 
-      handlerclick1: false,
-      handlerclick2: false,
-      handlerclick3: false,
-      handlerclick4: false,
-      handlerclick5: false,
-      // onClick:false,
+  
+}
 
-      value: 0
+
+// join room event 
+handleRoom = (msg,duration) => {
+
+//  var el = document.createElement("div");
+//  el.setAttribute("style","position:absolute;top:40%;left:50%;color:white;");
+//  let dies = [Math.floor(Math.random() * 6+1) ,Math.floor(Math.random() * 6+1),Math.floor(Math.random() * 6+1)]
+//  console.log('dies',dies)
+//  el.innerHTML = `${msg} ${dies}`;
+//  setTimeout(function(){
+//   el.parentNode.removeChild(el);
+//  },duration);
+//  document.body.appendChild(el);
+
+ ws.send(JSON.stringify({  
+  type:"diceRolling",
+//   data:{  
+//      numbers:dies
+// }
+}))
+
+}
+
+
+ 
+componentDidMount = () => {
+
+localStorage.clear()
+
+let name = window.prompt("Enter your name please?")
+if(name != null) {
+  this.setState({
+    name : name
+  })
+}
+///connection estbished user
+ws.onopen=()=>{
+    ws.send(JSON.stringify({"connection":this.state.name,"type" : "connection","token":"hjdfhjdfhj","uuid":"35r62veef3235t6"}));
+  }  
+  ws.onmessage = (event) => {
+    // console.log("WebSocket message received:", event.data);
+    if(JSON.parse(event.data).type === "connection") {
+      console.log("on Connection:", event.data);
+      localStorage.setItem('connection',event.data)
+    }
+
+
+    if(JSON.parse(event.data).type === "changeStatus") {
+      console.log("on Connection:", event.data);
+      localStorage.setItem('state',event.data)
+    }
+
+    if(JSON.parse(event.data).type === "results") {
+      console.log("on results:", JSON.parse(event.data));
+      if(JSON.parse(event.data) && JSON.parse(event.data).data.players.length > 0) {
+        JSON.parse(event.data).data.players.map(player => {
+          console.log("player",player)
+          if(player.name === this.state.name) {
+            let value = player.winAmount - player.amount
+            if(value > 0) {
+              this.setState(pre=>({
+                balance : parseInt(pre.balance) + parseInt(player.winAmount),
+                total : 0
+              }))
+              let el = document.createElement("div");
+              el.setAttribute("style","position:absolute;top:40%;left:40%;color:white;");
+              el.innerHTML = `Congratulation you won ${value} betAmount : ${player.amount} winAmount : ${player.winAmount}`;
+              setTimeout(function(){
+               el.parentNode.removeChild(el);
+              },8000);
+              document.body.appendChild(el);
+            } else if (value === 0) {
+              this.setState(pre=>({
+                balance : parseInt(pre.balance) + parseInt(player.winAmount),
+                total : 0
+              }))
+              let el = document.createElement("div");
+              el.setAttribute("style","position:absolute;top:40%;left:40%;color:blue;");
+              el.innerHTML = `Sorry you gained ${value} betAmount : ${player.amount} winAmount : ${player.winAmount}`;
+              setTimeout(function(){
+               el.parentNode.removeChild(el);
+              },8000);
+              document.body.appendChild(el);
+            }
+             else {
+              this.setState(pre=>({
+                balance : parseInt(pre.balance) + parseInt(player.winAmount),
+                total : 0
+              }))
+              let el = document.createElement("div");
+              el.setAttribute("style","position:absolute;top:60%;left:40%;color:red;");
+              el.innerHTML = `Sorry you lost ${value} betAmount : ${player.amount} winAmount : ${player.winAmount}`;
+              setTimeout(function(){
+               el.parentNode.removeChild(el);
+              },8000);
+              document.body.appendChild(el);
+            }
+            
+          }
+        })
+      }
+      localStorage.setItem('results',event.data)
+    }
+
+    
+
+    if(JSON.parse(event.data).type === "summary") {
+      console.log("on Connection:", event.data);
+      localStorage.setItem('summary',event.data)
+    }
+
+
+
+
+    //// joining in the rooom  user:
+
+
+    if(JSON.parse(event.data).type === "join") {
+      console.log("on Join:", event.data);
+      // localStorage.setItem('join',event.data)
+// function jsonfile(RequsetData){
+//         jsonfile.writeFile(RequsetData, obj, function (err) {
+//           console.error(err);
+//         })
+//       }      
+    }
+
+
+     //// bet placed in user to local data:
+
+
+    if(JSON.parse(event.data).type === "betPlaced") {
+      console.log("on Betplaced:", event.data);
+      // this.setState(prev=>({
+      //   balance : prev.balance - parseInt(JSON.parse(event.data).data.amount)
+
+      // }))
+      localStorage.setItem('betPlaced',event.data)
 
     }
-    // this.handlerclick=this.handlerclick.bind();
+
+    /// place bet
+
+
+    // if(JSON.parse(event.data).type === 'PlaceBet') {
+    //   console.log("on PlaceBet:", event.data);
+    //   localStorage.setItem('PlaceBet',event.data)
+
+    
+    // }
+
+    
+
+
+    //
+
+
+    if(JSON.parse(event.data).type === 'DiceRolled') {
+      console.log("on DiceRolled:", event.data);
+      localStorage.setItem('DiceROlled',event.data)
+      
+    
+    }
+
+
+  };
+  
   }
 
 
-  //   swich(handlerclick){
-  //       case false:
-  //   }
+
+  /// hide and show events call////////////////////////////
 
   handlechange = (event) => {
     console.log('hello moving');
     this.setState({
       value: event.target.value
-
-
-    })
-  }
-
-
-  handlechange1 = (event) => {
-    console.log('hello moving');
-    this.setState({
-      value: event.target.value,
     })
   }
 
@@ -52,73 +222,152 @@ export default class Frontview extends Component {
     console.log('botton hide$$show');
 
     const { handlerclick } = this.state;
-    this.setState({
-      handlerclick: true,
-      value: 0
-    })
+    if (handlerclick === "handlerclick") {
+      this.setState({
+        handlerclick: "",
+        value: 0
+      })
+    } else {
+      this.setState({
+        handlerclick: "handlerclick",
+        value: 0,
+        number : 1
+      });
+    }
   }
 
 
   handlerclick1 = () => {
-    console.log("hello  button2")
+    // console.log("hello  button2")
 
-    const { handlerclick1 } = this.state;
+    const { handlerclick } = this.state;
+    if(handlerclick === "handlerclick1") {
     this.setState({
-      handlerclick1: true,
+      handlerclick: "",
       value: 0
-    })
+    });
+  } else {
+    this.setState({
+      handlerclick: "handlerclick1",
+      value: 0,
+      number : 2
+
+  });
 
   }
+}
 
   handlerclick2 = () => {
-    console.log("hello  button2")
+    // console.log("hello  button2")
+    const { handlerclick } = this.state;
+    if(handlerclick === "handlerclick2"){
+        this.setState({
+        handlerclick: "",
+        value: 0
+    });
+  } else { 
+        this.setState({
+        handlerclick: "handlerclick2",
+        value: 0,
+        number : 3
+    });
 
-    const { handlerclick2 } = this.state;
-    this.setState({
-      handlerclick2: !handlerclick2
-    })
+  }
 
   }
 
 
   handlerclick3 = () => {
-    console.log("hello  button3")
-    const { handlerclick2 } = this.state;
-    const { handlerclick3 } = this.state;
+    
+    const { handlerclick} = this.state;
+    if(handlerclick === "handlerclick3") {
     this.setState({
-      handlerclick3: !handlerclick3
-    })
-    console.log(handlerclick2);
+      handlerclick: "",
+      // value: 0
+    });
+  } else {
+    this.setState({
+      handlerclick: "handlerclick3",
+      value: 0,
+      number : 4
+    });
+  }
 
   }
   handlerclick4 = () => {
-    console.log("hello  button2")
+    // console.log("hello  button2")
 
-    const { handlerclick4 } = this.state;
+    const { handlerclick } = this.state;
+    if(handlerclick === "handlerclick4") {
     this.setState({
-      handlerclick4: !handlerclick4
-    })
+      handlerclick: ""
+      
+    });
+  } else {
+    this.setState({
+      handlerclick: "handlerclick4",
+      value:0,
+      number : 5
+    });
+  }
 
   }
 
 
   handlerclick5 = () => {
-    console.log("hello  button2")
+    // console.log("hello  button2")
 
-    const { handlerclick5 } = this.state;
+    const { handlerclick } = this.state;
+    if(handlerclick === "handlerclick5") {    
     this.setState({
-      handlerclick5: !handlerclick5
-    })
+      handlerclick: "",
+      value: 0,
+      
+    });
+  } else {
+    this.setState({
+      handlerclick: "handlerclick5",
+      value: 0,
+      number : 6
+    });
+  }
 
   }
 
+
+
+
+  /// bet placed evnet  
+
+
+handlechangebet=()=>{ 
+
+
+ console.log('bet value   ',this.state.value,this.state.number,);
+ this.setState(preState =>({
+  //  balance : preState.balance - this.state.value,
+   handlerclick : null,
+   total : parseInt(preState.value) + parseInt(preState.total),
+    value : 0,
+    balance : preState.balance - preState.value
+ }))
+
+
+  ws.send(JSON.stringify({"type" : "placeBet","betValue":this.state.value,"by":this.state.name , "number" :this.state.number }));
+
+
+  // ws.send(JSON.stringify({"type":"PlaceBet", "number":this.state.number, "amount":this.state.balance ,"prev":localStorage.getItem('PlaceBet')}))
+
+  // // console.log(PlaceBet);
+  // ws.send(JSON.stringify({"type":"DiceRolled", "number":this.state.number,"amount":this.state.balance ,"prev":localStorage.getItem('DiceRolled')}))
+}
 
 
 
   render() {
     return (
       <div >
-        <div class="container">
+        <div className="container">
           <div className="row">
             <div className="col-12">
 
@@ -133,17 +382,17 @@ export default class Frontview extends Component {
 
                 <div className="mb-auto container-1 d-flex align-content-center flex-wrap position-absolute">
 
-                  <div className="col d-block side-content text-center bg font_color">
+                  <div className="col d-block side-content text-center bg font_color p-0">
 
 
                     <img src={process.env.PUBLIC_URL + "/layer5.png"} />
                     <img src={process.env.PUBLIC_URL + "/hot.png"} />
-                    <p id="number" class="mb-sm-0 py-lg-1">1</p>
-                    <p id="number" class="mb-sm-0 py-lg-1">2</p>
-                    <p id="number" class="mb-sm-0 py-lg-1">3</p>
-                    <p id="number" class="mb-sm-0 py-lg-1">4</p>
-                    <p id="number" class="mb-sm-0 py-lg-1">5</p>
-                    <p id="number" class="mb-sm-0 py-lg-1">6</p>
+                    <p id="number" className="mb-sm-0 py-lg-1">1</p>
+                    <p id="number" className="mb-sm-0 py-lg-1">2</p>
+                    <p id="number" className="mb-sm-0 py-lg-1">3</p>
+                    <p id="number" className="mb-sm-0 py-lg-1">4</p>
+                    <p id="number" className="mb-sm-0 py-lg-1">5</p>
+                    <p id="number" className="mb-sm-0 py-lg-1">6</p>
                   </div>
 
                 </div>
@@ -154,23 +403,23 @@ export default class Frontview extends Component {
                   <div className="col-3 w-100 p-0">
                     <div className="col-12 border-right p-0">
                       <div className="input-group">
-                        <input className="input-group-append w-100 bg text-black font_color" type="text" name="text"
-                          placeholder="CLICK TO CHAT" /><span><a href=""><i className="fa fa-paper-plane-o chat_send_button"
-                            aria-hidden="true"></i></a></span>
+                  <input className="input-group-append w-100 bg text-black font_color" type="text" name="text"
+                          placeholder="CLICK TO CHAT"/><span><a href="">   <i class="fas fa-paper-plane chat_send_button" aria-hidden="true"></i>
+                            </a></span>
                       </div>
                     </div>
                     <div className="col-12 border-right">
                       <div className="row d-flex flex-nowrap">
 
-                        <div className="col bg m-1 p-0">
+                        <div className="col bg m-1 p-0 text-center">
                           <p className="font_color text-center p-auto m-0">BALANCE</p>
-                          <span id="balance"><small>10000</small></span>
+                          <span id="balance"><small>{this.state.balance}</small></span>
 
                         </div>
 
-                        <div className="col bg m-1 p-0">
+                        <div className="col bg m-1 p-0 text-center">
                           <p className="font_color text-center p-auto m-0">TOTAL BET</p>
-                          <span id="total-balance"><small>10000</small></span>
+                          <span id="total-balance" ><small>bet:-{this.state.total}</small></span>
                         </div>
                       </div>
                     </div>
@@ -181,20 +430,16 @@ export default class Frontview extends Component {
                       <div className="col-2 p-0">
                         <p className="font_color my-2">CLICK THE NUMBERS TO PLACE BET
                                 </p>
-                        {/* <!-- <img class="h-50 col-12 m-2 w-75" src="images/text.png" alt=""> --> */}
+                       
+                      
                       </div>
 
 
                       {/* <!--buttons--> */}
 
                       <div className="col-lg-10 d-flex col-md-10 col-sm-10 px-0 btn-group">
-                        {/* <!-- button-1 && bar-1--> */}
-
-
-
-
-
-                        {this.state.handlerclick &&
+      {/* <!-- button-1 && bar-1--> */}
+                        {this.state.handlerclick === "handlerclick" &&
                           <div className="col-2 bar m-0 text-center child bar-1" id="bar1">
 
                             <div><span className="bet_range" id="demo">{this.state.value}</span>
@@ -206,31 +451,25 @@ export default class Frontview extends Component {
                             </div>
 
                           </div>}
-
-
-
-
-                        <div class="col-2 button_img btn p-0 parant h-100">
-                          {/* <img onclick="barVisibility('1');" src="images/Group-1.png" alt="" class="btn_img"/> */}
-
+                        <div className="col-2 button_img btn p-0 parant h-100">
+                         
                           <img onClick={this.handlerclick} src={process.env.PUBLIC_URL + "/Group 1.png"} alt="" className="btn_img" />
 
                         </div>
 
-                        {/* <!--button-2 && bar-2--> */}
-                        {this.state.handlerclick1 && <div class="col-2 bar m-0 child bar-2" id="bar2">
+ {/* <!--button-2 && bar-2--> */}
+                        {this.state.handlerclick === "handlerclick1" && <div class="col-2 bar m-0 child bar-2" id="bar2">
                           <span className="bet_range" id="demo">{this.state.value}</span>
                           <div className="slidecontainer">
-                            <input onChange={this.handlechange1} type="range" min={0} max={1000} value={this.state.value} className="slider" id="myRange" />
+                            <input onChange={this.handlechange} type="range" min={0} max={1000} value={this.state.value} className="slider" id="myRange" />
                           </div>
                         </div>}
                         <div className="col-2 button_img btn p-0 h-100 parant">
                           <img onClick={this.handlerclick1} src={process.env.PUBLIC_URL + "/Group 2.png"} alt="" className="btn_img" />
 
                         </div>
-
-                        {/* <!--button-3 && bar-3--> */}
-                        {this.state.handlerclick2 && <div className="col-2 bar m-0 child bar-3" id="bar3">
+ {/* <!--button-3 && bar-3--> */}
+                        {this.state.handlerclick === "handlerclick2" && <div className="col-2 bar m-0 child bar-3" id="bar3">
                           <span className="bet_range" id="demo">{this.state.value}</span>
                           <div className="slidecontainer">
                             <input onChange={this.handlechange} type="range" min={0} max={1000} value={this.state.value} className="slider" id="myRange" />
@@ -241,13 +480,11 @@ export default class Frontview extends Component {
                           <img onClick={this.handlerclick2} src={process.env.PUBLIC_URL + "/Group 3.png"} alt="" className="btn_img" />
 
                         </div>
-
-
-                        {/* <!--button-4 && bar-4--> */}
-                        {this.state.handlerclick3 && <div className="col-2 bar m-0 child bar-4" id="bar4">
+ {/* <!--button-4 && bar-4--> */}
+                        {this.state.handlerclick === "handlerclick3" && <div className="col-2 bar m-0 child bar-4" id="bar4">
                           <span className="bet_range" id="demo">{this.state.value}</span>
                           <div className="slidecontainer">
-                            <input type="range" min={0} max={1000} value={this.state.value} className="slider" id="myRange" />
+                            <input  onChange={this.handlechange} type="range" min={0} max={1000} value={this.state.value} className="slider" id="myRange" />
 
                           </div>
                         </div>}
@@ -257,7 +494,7 @@ export default class Frontview extends Component {
                         </div>
 
                         {/* <!--button-5 && bar-5--> */}
-                        {this.state.handlerclick4 && <div className="col-2 bar m-0 child bar-5" id="bar5">
+                        {this.state.handlerclick === "handlerclick4" && <div className="col-2 bar m-0 child bar-5" id="bar5">
                           <span className="bet_range" id="demo">{this.state.value}</span>
                           <div className="slidecontainer">
                             <input onChange={this.handlechange} type="range" min={0} max={1000} value={this.state.value} className="slider" id="myRange" />
@@ -270,7 +507,7 @@ export default class Frontview extends Component {
                         </div>
 
                         {/* <!--button-6 && bar-6--> */}
-                        {this.state.handlerclick5 && <div className="col-2 bar m-0 child bar-6" id="bar6">
+                        {this.state.handlerclick === "handlerclick5" && <div className="col-2 bar m-0 child bar-6" id="bar6">
                           <span className="bet_range" id="demo">{this.state.value}</span>
                           <div className="slidecontainer">
                             <input onChange={this.handlechange} type="range" min={0} max={1000} value={this.state.value} className="slider" id="myRange" />
@@ -287,7 +524,7 @@ export default class Frontview extends Component {
                         <div className="col-2 button_img parant h-100 p-0">
                           {/* <img onclick="barVisibility('6');" src="images/bet_btn.png" alt="" class="btn_img border border-black"> */}
 
-                          <img onClick={this.handlerclick5} src={process.env.PUBLIC_URL + "/bet_btn.png"} alt="" className="btn_img border border-black" />
+                          <img onClick={(e) => this.handlechangebet()}  src={process.env.PUBLIC_URL + "/bet_btn.png"} alt="" className="btn_img border border-black" />
 
 
                         </div>
@@ -303,33 +540,15 @@ export default class Frontview extends Component {
                     <a href=""><img className="img-fluid" src={process.env.PUBLIC_URL + "/Replay Button.png"} /></a>
                     <a href=""><img className="img-fluid" src={process.env.PUBLIC_URL + "/Star Button.png"} /></a>
                     <a href=""><img className="img-fluid" src={process.env.PUBLIC_URL + "/Stats Button.png"} /></a>
-                    <a href=""><img className="img-fluid square" src={process.env.PUBLIC_URL + "/table.png"} /></a>
-                    <a href=""><img className="img-fluid square" src={process.env.PUBLIC_URL + "/lobby.png"} /></a>
-
-
-
-
-
-
-
-
+                    <span  onClick={this.handleJoin} ><img  className="img-fluid square" src={process.env.PUBLIC_URL + "/table.png"} /></span>
+                   <span onClick = {e => this.handleRoom("Dies Rolled ",2000)}><img className="img-fluid square" src={process.env.PUBLIC_URL + "/lobby.png"} /></span>
                   </div>
                 </div>
               </div>
-
-
-
-
             </div>
 
           </div>
         </div>
-
-
-
-
-
-
       </div>
     )
   }
